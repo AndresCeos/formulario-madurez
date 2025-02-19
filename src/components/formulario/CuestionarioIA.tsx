@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Swal from 'sweetalert2';
 import {
   Select,
   SelectTrigger,
@@ -312,7 +313,12 @@ export default function CuestionarioIA() {
     setProcesosErrores("");
     setProcesosCriticos("");
 
-    alert("Cuestionario enviado.");
+    Swal.fire({
+      title: 'Formulario enviado',
+      text: 'Datos enviados con éxito',
+      icon: 'success',
+      confirmButtonText: 'Cerrar'
+    })
   };
 
   return (
@@ -335,6 +341,7 @@ export default function CuestionarioIA() {
                   value={nombreEmpresa}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setNombreEmpresa(e.target.value)}
                   placeholder="Ej: ACME Corp"
+                  required
                 />
               </div>
               <div>
@@ -343,6 +350,7 @@ export default function CuestionarioIA() {
                   value={sectorIndustria}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setSectorIndustria(e.target.value)}
                   placeholder="Ej: Manufactura, Retail"
+                  required
                 />
               </div>
               <div>
@@ -351,6 +359,7 @@ export default function CuestionarioIA() {
                   value={tamanoEmpresa}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setTamanoEmpresa(e.target.value)}
                   placeholder="Ej: 100"
+                  required
                 />
               </div>
               <div>
@@ -359,6 +368,7 @@ export default function CuestionarioIA() {
                   value={pais}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setPais(e.target.value)}
                   placeholder="Ej: México, Colombia"
+                  required
                 />
               </div>
               <div>
@@ -367,6 +377,7 @@ export default function CuestionarioIA() {
                   value={contacto}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setContacto(e.target.value)}
                   placeholder="Ej: Juan Pérez, Director TI"
+                  required
                 />
               </div>
             </div>
