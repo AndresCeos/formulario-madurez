@@ -437,7 +437,7 @@ export default function CuestionarioIA() {
           confirmButtonText: 'Cerrar'
         })
       } else {
-        console.error('Error al enviar los datos');
+        console.error('Error al enviar los datos', response);
       }
     } catch (error) {
       console.error('Error en el envío de datos:', error);
