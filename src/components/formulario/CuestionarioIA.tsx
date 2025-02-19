@@ -422,7 +422,7 @@ export default function CuestionarioIA() {
     */
   
     try {
-      const response = await fetch('/api/submit-to-sheets', {
+      const response = await fetch('/submit-to-sheets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rows }),
