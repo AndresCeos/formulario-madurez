@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -167,59 +167,6 @@ export default function CuestionarioIA() {
   const [procesosErrores, setProcesosErrores] = useState<string>("");
   const [procesosCriticos, setProcesosCriticos] = useState<string>("");
 
-  const form_data: FormData = {
-    infoGeneral: {
-      nombreEmpresa,
-      sectorIndustria,
-      tamanoEmpresa,
-      pais,
-      contacto,
-    },
-    estrategiaVision: {
-      estrategiaFormal,
-      nivelImportancia,
-      objetivosIA,
-      casosUsoIdentificados,
-      areasImplementacion,
-    },
-    datosGobernanza: {
-      estrategiaDatos,
-      almacenamientoDatos,
-      seguridadDatos,
-      accesibilidadDatos,
-      datosHistoricos,
-    },
-    tecnologiaInfraestructura: {
-      infraestructuraIA,
-      nivelAdopcionIA,
-      herramientasUtilizadas,
-      integracionActual,
-    },
-    talentoCultura: {
-      rolesEspecificos,
-      equipoIA,
-      nivelConocimiento,
-      capacitaciones,
-      capacitacionDirectivos,
-      capacitacionAdministrativos,
-      capacitacionComercial,
-      capacitacionOperativo,
-    },
-    casosUsoPotencial: {
-      desafiosEmpresa,
-      modelosIAProbrados,
-      expectativasImpacto,
-      kpis,
-      colaboracionesExternas,
-    },
-    tareasRepetitivas: tareas,
-    adicionales: {
-      tareasAutomatizadas,
-      procesosErrores,
-      procesosCriticos,
-    },
-  };
-
   // Asegura que la tabla sea horizontalmente desplazable en pantallas pequeñas
   const handleAddRow = (): void => {
     setTareas((prev) => [
@@ -236,50 +183,13 @@ export default function CuestionarioIA() {
     });
   };
 
-  const flattenFormData = (data: FormData) => {
-    // Combina toda la información "fija" en un solo objeto
-    const commonData = {
-      ...data.infoGeneral,
-      ...data.estrategiaVision,
-      ...data.datosGobernanza,
-      ...data.tecnologiaInfraestructura,
-      ...data.talentoCultura,
-      ...data.casosUsoPotencial,
-      ...data.adicionales,
-    };
-  
-    // Si hay tareas repetitivas, crea una fila por cada tarea (agregando la info común)
-    if (data.tareasRepetitivas && data.tareasRepetitivas.length > 0) {
-      return data.tareasRepetitivas.map((tarea: Tarea) => ({
-        ...commonData,
-        tareaArea: tarea.area,
-        tareaDescripcion: tarea.tarea,
-        tareaFrecuencia: tarea.frecuencia,
-        tareaTiempo: tarea.tiempo,
-        tareaImpacto: tarea.impacto,
-      }));
-    } else {
-      // Si no hay tareas, se envía una única fila con los campos de tarea vacíos
-      return [
-        {
-          ...commonData,
-          tareaArea: '',
-          tareaDescripcion: '',
-          tareaFrecuencia: '',
-          tareaTiempo: '',
-          tareaImpacto: '',
-        },
-      ];
-    }
-  };
-
   // Ejemplo de función para POST a un servidor interno
 
 
   // Ejemplo de función para POST a Google Sheets usando Apps Script
   // Deberás crear un script de Google Apps Script que reciba una petición POST y
   // actualice la hoja de cálculo correspondiente.
- /* const postToGoogleSheets = async (data: FormData): Promise<void> => {
+  const postToGoogleSheets = async (data: FormData): Promise<void> => {
     try {
       // Reemplaza la URL con el enlace de tu despliegue de Apps Script
       const response = await fetch(
@@ -302,8 +212,8 @@ export default function CuestionarioIA() {
       console.error(error);
     }
   };
-*/
-  /*const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     // Se arma un objeto con toda la información del formulario
@@ -409,39 +319,6 @@ export default function CuestionarioIA() {
       icon: 'success',
       confirmButtonText: 'Cerrar'
     })
-  };*/
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, formData: FormData) => {
-    e.preventDefault();
-  
-    // Prepara las filas a insertar en la hoja (cada fila es un objeto plano)
-    const rows = flattenFormData(formData);
-    /*
-    console.log("Rows:", rows);
-    console.log("data:", formData);
-    */
-  
-    try {
-      const response = await fetch('/submit-to-sheets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rows }),
-      });
-
-      if (response.ok) {
-        console.log('Datos enviados correctamente a Google Sheets');
-        Swal.fire({
-          title: 'Formulario enviado',
-          text: 'Datos enviados con éxito',
-          icon: 'success',
-          confirmButtonText: 'Cerrar'
-        })
-      } else {
-        console.error('Error al enviar los datos', response);
-      }
-    } catch (error) {
-      console.error('Error en el envío de datos:', error);
-    }
   };
 
   return (
@@ -453,7 +330,7 @@ export default function CuestionarioIA() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={(e)=> handleSubmit(e, form_data)} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Sección 1: Información General */}
           <div className="border-b pb-4">
             <h2 className="text-xl font-semibold mb-2">1. Información General de la Empresa</h2>
